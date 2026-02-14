@@ -11,14 +11,18 @@
   --accent:#ff2e63;
   --accent2:#ff6fa3;
   --text:#f1f1f1;
-  --muted:#a0a0a0;
+  --muted:#a7afc3;
+  --card: rgba(255,255,255,.03);
+  --border: rgba(255,255,255,.08);
 }
 
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background:#05060a;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1000px 520px at 70% -10%, rgba(255,46,99,.14), transparent 60%),
+              radial-gradient(800px 420px at 20% 0%, rgba(255,111,163,.10), transparent 60%),
+              var(--bg);
   color:var(--text);
   scroll-behavior:smooth;
 }
@@ -32,248 +36,430 @@ body{
   align-items:center;
   justify-content:center;
   z-index:9999;
-  overflow:hidden;
   transition:.8s ease;
 }
-
 .intro.hide{
   opacity:0;
   pointer-events:none;
   transform:scale(1.05);
 }
-
 .intro-inner{
   text-align:center;
+  padding: 40px 18px;
+  width:min(940px, 92vw);
 }
-
 .brand{
   letter-spacing:6px;
   font-size:14px;
   opacity:.7;
 }
-
 .title{
-  font-size: clamp(48px,8vw,100px);
-  font-weight:900;
+  margin:18px 0 10px;
+  font-size: clamp(46px,8vw,100px);
+  font-weight:950;
   letter-spacing:4px;
   text-transform:uppercase;
-  background:linear-gradient(180deg,#fff,#ccc,#fff);
+  background:linear-gradient(180deg,#fff,#cfcfcf,#fff);
   -webkit-background-clip:text;
   color:transparent;
   animation: zoomIn 2.5s cubic-bezier(.16,.84,.22,1) forwards;
   opacity:0;
   transform:scale(1.5);
 }
-
 @keyframes zoomIn{
   0%{opacity:0; transform:scale(1.6); filter:blur(18px)}
   60%{opacity:1; transform:scale(1.05); filter:blur(3px)}
   100%{opacity:1; transform:scale(1); filter:blur(0)}
 }
-
 .subtitle{
   margin-top:20px;
   font-size:18px;
   color:var(--muted);
-  opacity:0;
-  animation:fadeIn 2s ease 1.5s forwards;
 }
-
-@keyframes fadeIn{
-  to{opacity:1}
-}
-
 .btn{
-  margin-top:30px;
+  margin-top:22px;
   padding:12px 22px;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   border:none;
   border-radius:12px;
   color:white;
-  font-weight:700;
+  font-weight:800;
   cursor:pointer;
   box-shadow:0 0 30px rgba(255,46,99,.3);
-  transition:.2s;
 }
-.btn:hover{transform:scale(1.07)}
+.audio-status{
+  margin-top:14px;
+  font-size:12px;
+  color: rgba(255,255,255,.65);
+}
 
+/* TOPBAR */
+.topbar{
+  position: sticky;
+  top:0;
+  background: rgba(5,6,10,.92);
+  padding:14px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.btn2{
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color:#fff;
+  cursor:pointer;
+}
+
+/* SECTION */
 .section{
-  padding:80px 10%;
+  width:90%;
+  max-width:1000px;
+  margin:auto;
+  padding:60px 0;
 }
-
 .section h2{
-  font-size:32px;
-  margin-bottom:30px;
   text-transform:uppercase;
   letter-spacing:3px;
 }
 
-/* Timeline */
+/* TIMELINE */
 .timeline{
-  border-left:2px solid var(--accent);
+  position:relative;
   padding-left:30px;
 }
-
-.event{
-  margin-bottom:40px;
-  position:relative;
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:10px;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:var(--accent);
 }
-
+.event{
+  position:relative;
+  margin-bottom:40px;
+  padding:20px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+}
 .event::before{
   content:"";
   position:absolute;
-  left:-40px;
-  top:5px;
+  left:-27px;
+  top:20px;
   width:15px;
   height:15px;
-  border-radius:50%;
   background:var(--accent);
-  box-shadow:0 0 15px var(--accent);
+  border-radius:50%;
 }
-
-.event h3{
-  margin:0 0 8px 0;
+.date{
+  font-size:12px;
+  opacity:.7;
 }
-
-.event p{
-  color:var(--muted);
+.tag{
+  font-size:12px;
+  margin-left:10px;
+  opacity:.8;
 }
-
-/* Capítulos */
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+.quote{
+  margin-top:10px;
+  font-style:italic;
+  opacity:.8;
 }
-
-.card{
-  background:#111;
-  padding:25px;
-  border-radius:18px;
-  transition:.3s;
-  border:1px solid rgba(255,255,255,.08);
+.media img{
+  width:100%;
+  border-radius:12px;
+  margin-top:10px;
 }
-
-.card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 10px 30px rgba(255,46,99,.2);
-}
-
-/* Créditos */
-.credits{
-  text-align:center;
-  font-size:14px;
-  color:var(--muted);
-  margin-top:60px;
-}
-
 footer{
   text-align:center;
   padding:40px;
   font-size:12px;
-  color:#777;
+  opacity:.6;
 }
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
 <section class="intro" id="intro">
   <div class="intro-inner">
     <div class="brand">PRESENTA</div>
     <div class="title">DESDE QUE LLEGASTE</div>
-    <div class="subtitle">
-      Momentos, risas, enojos y recuerdos que no quiero perder.
-    </div>
+    <div class="subtitle">Momentos, risas, enojos y recuerdos que no quiero perder.</div>
     <button class="btn" id="btnPlay">▶ Iniciar película</button>
+    <div class="audio-status" id="audioStatus">Música cargando...</div>
   </div>
 </section>
 
 <audio id="music" src="valery.mp3" preload="auto"></audio>
 
-<!-- CONTENIDO -->
-<section class="section">
-  <h2>Nuestra Historia</h2>
-  <div class="timeline">
-    <div class="event">
-      <h3>El comienzo</h3>
-      <p>Aquí va la historia de cómo empezó todo.</p>
-    </div>
-
-    <div class="event">
-      <h3>Primer recuerdo especial</h3>
-      <p>Ese momento que marcó algo diferente.</p>
-    </div>
-
-    <div class="event">
-      <h3>Nuestra canción</h3>
-      <p>Desde aquí todo empezó a sentirse más real.</p>
-    </div>
-
-    <div class="event">
-      <h3>Un día difícil</h3>
-      <p>Porque también hubo enojos… pero seguimos aquí.</p>
-    </div>
-  </div>
-</section>
+<div class="topbar">
+  <strong>Nuestra Película</strong>
+  <button class="btn2" id="toggleMusic">🎵 Música: OFF</button>
+</div>
 
 <section class="section">
-  <h2>Capítulos</h2>
-  <div class="cards">
-    <div class="card">
-      <h3>Capítulo 1</h3>
-      <p>El día que te conocí.</p>
-    </div>
-    <div class="card">
-      <h3>Capítulo 2</h3>
-      <p>Cuando entendí que eras diferente.</p>
-    </div>
-    <div class="card">
-      <h3>Capítulo 3</h3>
-      <p>Momentos que no quiero olvidar.</p>
-    </div>
-  </div>
+  <h2>Nuestra historia</h2>
+  <div class="timeline" id="timeline"></div>
 </section>
 
-<section class="section">
-  <h2>Créditos</h2>
-  <div class="credits">
-    Protagonistas: Tú & Yo ❤️<br><br>
-    Banda sonora: Nuestra canción 🎵<br><br>
-    Dirección: El destino ✨
-  </div>
-</section>
-
-<footer>
-  Hecho con cariño.
-</footer>
+<footer>Hecho con cariño ✨</footer>
 
 <script>
+
+const TIMELINE = [
+
+{
+  date: "21 Sep 2025",
+  title: "El día de la kermesse",
+  text: "Fuimos a la kermesse de mi colegio y, aunque había nervios y silencios de principiantes, estar contigo se sintió natural. Jugamos juegos de mesa, subimos a los mecánicos para soltar los nervios, almorzamos y cerramos con un concierto.",
+  tag: "Planes",
+  quote: "La primera de muchísimas veces más.",
+  img: "fotos/kermesse.jpg"
+},
+
+{
+  date: "03 Oct 2025",
+  title: "El día de los makis",
+  text: "Te recogí de la u después de la chamba. Aunque fue un día movido acompañándote en tus pendientes y activaciones, cerramos comiendo tranquilos en Kaito. Esos momentos simples son los que más cuentan.",
+  tag: "Planes",
+  quote: "Disfrutando de estar juntos después de un día largo.",
+  img: "fotos/makis.jpg"
+},
+
+{
+  date: "14 Oct 2025",
+  title: "El detalle de los tulipanes",
+  text: "Un día clave para valorar lo que tenemos. Te llevé tulipanes lilas con una nota para pedirte disculpas por no haber sido considerado. Mi prioridad era cuidar nuestra amistad y reconocer mis fallas.",
+  tag: "Planes",
+  quote: "Valoro nuestra amistad y quiero que sepas cuánto lamento mi error.",
+  img: "fotos/tulipanes.jpg"
+},
+
+{
+  date: "17 Oct 2025",
+  title: "Tarde en el Parque de la Amistad",
+  text: "Bajamos mil cambios caminando por el parque. Salir con Luna hizo que todo fuera más relajado mientras seguíamos conociéndonos a fondo. Terminamos cenando algo tranqui, solo nosotros tres.",
+  tag: "Planes",
+  quote: "Compartir momentos contigo sin pretensiones.",
+  img: "fotos/parque_amistad.jpg"
+},
+
+{
+  date: "23 Oct 2025",
+  title: "El detalle para Luna",
+  text: "Pasé por tu casa después de trabajar solo para llevarle su camiseta de la U con su nombre. Quería empezar a formar parte de su mundo porque sé lo importante que es ella para ti.",
+  tag: "Planes",
+  quote: "Esos minutos en la puerta de tu casa valieron la pena.",
+  img: "fotos/camiseta_luna.jpg"
+},
+
+{
+  date: "24 Oct 2025",
+  title: "El día que me animé",
+  text: "Fuimos al cine a ver doble función. Al llegar a tu casa, después de 5 minutos de silencio y muchos nervios, te confesé que estaba enamorado de ti. Fue un alivio gigante saber que era mutuo.",
+  tag: "Planes",
+  quote: "Tengo algo que decirte...",
+  img: "fotos/cine_confesion.jpg"
+},
+
+{
+  date: "28 Oct 2025",
+  title: "Nuestro primer beso",
+  text: "Salimos a caminar por un parque después de comer algo. Te asustaste con algo, me agarraste el brazo y terminamos de la mano. Entre caminata y charla, se dio nuestro primer beso de forma súper natural.",
+  tag: "Planes",
+  quote: "El cierre perfecto para esa caminata.",
+  img: "fotos/primer_beso.jpg"
+},
+
+{
+  date: "30 Oct 2025",
+  title: "Tu partido de fútbol",
+  text: "Me tocó ser espectador y apoyarte mientras jugabas con las chicas de tu trabajo. Fue un plan diferente que sirvió para seguir integrándonos más el uno en la vida del otro.",
+  tag: "Planes",
+  quote: "Estando ahí para apoyarte.",
+  img: "fotos/futbol.jpg"
+},
+
+{
+  date: "15 Nov 2025",
+  title: "Primera vez en mi casa",
+  text: "Después de verte ganar el campeonato de tu trabajo, almorzamos con mi familia. Pasamos la tarde armando una casita de jengibre y haciéndonos mascarillas faciales. Todo fluyó increíble.",
+  tag: "Planes",
+  quote: "Desde la emoción del fútbol hasta la tranquilidad de casa.",
+  img: "fotos/casa_mascarillas.jpg"
+},
+
+{
+  date: "19 Nov 2025",
+  title: "El ramo de lirios y tulipanes",
+  text: "Un momento difícil donde te busqué después de clase con flores y una carta. Te abrí mi corazón para pedirte perdón por mis errores, buscando recuperar tu confianza y ese 'último baile'.",
+  tag: "Planes",
+  quote: "Mi mayor deseo era arreglar todo y recuperar tu confianza.",
+  img: "fotos/perdon.jpg"
+},
+
+{
+  date: "29 Nov 2025",
+  title: "Tour por Villa El Salvador",
+  text: "Me llevaste a conocer tu mundo por las avenidas de Villa. Hicimos un 'taste test' de cachangas (mi primera vez) y nos quedamos conversando en el auto. Un plan sencillo pero muy especial.",
+  tag: "Planes",
+  quote: "Conociendo un poco más de tu mundo.",
+  img: "fotos/villa_cachangas.jpg"
+},
+
+{
+  date: "03 Dic 2025",
+  title: "Tu último día en la universidad",
+  text: "Verte lograr tu bachiller en Ingeniería Industrial me llenó de orgullo. Después de tantas amanecidas con los papers, ver que cumpliste tu meta se sintió como un triunfo de ambos.",
+  tag: "Planes",
+  quote: "Siempre voy a estar aquí para apoyarte en cada paso.",
+  img: "fotos/graduacion.jpg"
+},
+
+{
+  date: "07 Dic 2025",
+  title: "El cumple de Alexia en Cieneguilla",
+  text: "Fin de semana de desconexión total. Viajamos para celebrar, nos divertimos un montón y compartir esos días con tanta confianza nos unió muchísimo más.",
+  tag: "Planes",
+  quote: "Ese fin de semana nos unió un montón.",
+  img: "fotos/cieneguilla.jpg"
+},
+
+{
+  date: "12 Dic 2025",
+  title: "Alitas y distancia",
+  text: "Preparamos alitas acevichadas con vino en mi casa. Lo que era una noche divertida terminó en un punto de quiebre que marcó una distancia dolorosa entre nosotros por un tiempo.",
+  tag: "Planes",
+  quote: "Un momento difícil que cambió nuestra dinámica.",
+  img: "fotos/noche_alitas.jpg"
+},
+
+{
+  date: "28 Dic 2025",
+  title: "Nuestra conversación",
+  text: "Después de días eternos de distancia, nos sentamos a hablar y pusimos todo sobre la mesa. Logramos arreglar las cosas y cerramos el año de la mejor manera: eligiéndonos de nuevo.",
+  tag: "Planes",
+  quote: "Las ganas de estar juntos siempre fueron más fuertes.",
+  img: "fotos/reconciliacion.jpg"
+},
+
+{
+  date: "01 Ene 2026",
+  title: "Escapada a Ica",
+  text: "Arrancamos el año con un viaje relámpago a Ica. Fue un 'borrón y cuenta nueva' lleno de risas y aventuras.",
+  tag: "Viaje",
+  quote: "Este año venía con todo para nosotros.",
+  img: "fotos/viaje_ica.jpg"
+},
+
+{
+  date: "04 Ene 2026",
+  title: "La previa de tu cumple",
+  text: "Fuimos a la playa para que hicieras paddle y luego esperamos las doce en tu reunión. Fue especial darte la sorpresa con los mariachis.",
+  tag: "Cumpleaños",
+  quote: "Verte feliz con la música fue lo mejor de la noche.",
+  img: "fotos/previa_cumple.jpg"
+},
+
+{
+  date: "05 Ene 2026",
+  title: "Tu cumpleaños",
+  text: "Compramos tu regalo después de la chamba y fuimos a cenar al Museo Larco. Una noche increíble los dos juntos.",
+  tag: "Cumpleaños",
+  quote: "Celebrando tu vida en un lugar tan especial.",
+  img: "fotos/cena_larco.jpg"
+},
+
+{
+  date: "08 Feb 2026",
+  title: "El reencuentro",
+  text: "Después de dos semanas difíciles, nos sentamos a conversar con madurez y decidimos que lo nuestro vale mucho más que cualquier malentendido.",
+  tag: "Reencuentro",
+  quote: "Decidir que lo que tenemos vale mucho más.",
+  img: "fotos/conversacion_final.jpg"
+},
+
+{
+  date: "10 Feb 2026",
+  title: "El gran paso",
+  text: "Te pedí oficialmente que fueras mi enamorada. Ese 'sí' es el inicio de nuestra etapa más formal.",
+  tag: "Oficial",
+  quote: "Ahora caminamos de la mano con la seguridad de lo que sentimos.",
+  img: "fotos/enamorados.jpg"
+}
+
+];
+
+const timelineEl = document.getElementById("timeline");
+
+function renderTimeline(items){
+  timelineEl.innerHTML = items.map(item => `
+    <div class="event">
+      <div>
+        <span class="date">${item.date}</span>
+        <span class="tag">${item.tag}</span>
+      </div>
+      <h3>${item.title}</h3>
+      <p>${item.text}</p>
+      ${item.quote ? `<div class="quote">“${item.quote}”</div>` : ""}
+      ${item.img ? `<div class="media"><img src="${item.img}"></div>` : ""}
+    </div>
+  `).join("");
+}
+
+renderTimeline(TIMELINE);
+
+/* MÚSICA */
 const intro = document.getElementById("intro");
 const btnPlay = document.getElementById("btnPlay");
 const music = document.getElementById("music");
+const toggleMusic = document.getElementById("toggleMusic");
+const audioStatus = document.getElementById("audioStatus");
 
-btnPlay.addEventListener("click", async () => {
-  intro.classList.add("hide");
+let musicOn = false;
 
-  try{
-    music.volume = 0;
-    await music.play();
-
-    let vol = 0;
-    const fade = setInterval(() => {
-      if (vol < 1) {
-        vol += 0.05;
-        music.volume = vol;
-      } else {
-        clearInterval(fade);
-      }
-    }, 150);
-  }catch(e){}
-
-  setTimeout(()=> intro.style.display="none",800);
+music.addEventListener("canplaythrough", () => {
+  audioStatus.innerHTML = "Música lista ✅";
 });
+music.addEventListener("error", () => {
+  audioStatus.innerHTML = "Error: revisa valery.mp3";
+});
+
+async function playMusic(){
+  music.volume = 0;
+  await music.play();
+  musicOn = true;
+  toggleMusic.textContent = "🎵 Música: ON";
+  let vol = 0;
+  const fade = setInterval(() => {
+    vol += 0.05;
+    if(vol >= 1){ clearInterval(fade); }
+    music.volume = vol;
+  }, 150);
+}
+
+btnPlay.addEventListener("click", async ()=>{
+  intro.classList.add("hide");
+  setTimeout(()=> intro.style.display="none",800);
+  try{ await playMusic(); }catch(e){}
+});
+
+toggleMusic.addEventListener("click", async ()=>{
+  if(!musicOn){
+    try{ await playMusic(); }catch(e){}
+  }else{
+    music.pause();
+    musicOn = false;
+    toggleMusic.textContent = "🎵 Música: OFF";
+  }
+});
+
 </script>
 
 </body>
