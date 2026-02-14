@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nuestra Película — Valery ✨</title>
+
+  <style>
+    :root{
+      --bg:#05060a;
+      --card:#0e1018;
+      --text:#e9ecf2;
+      --muted:#a7afc3;
+      --accent:#ff2e63;
+      --accent2:#ff6fa3;
+      --line:#22263a;
+      --glow: 0 0 24px rgba(255,46,99,.35);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 70% -10%, rgba(255,46,99,.18), transparent 60%),
+                  radial-gradient(900px 500px at 20% 0%, rgba(255,111,163,.12), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    /* ====== INTRO (estilo streaming, no copia exacta) ====== */
+    .intro{
+      position:fixed;
+      inset:0;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      transition: opacity .9s ease, transform .9s ease;
+    }
+    .intro.hide{
+      opacity:0;
+      pointer-events:none;
+      transform: scale(1.02);
+    }
+    .intro-inner{
+      width:min(920px, 92vw);
+      text-align:center;
+      padding:40px 20px;
+    }
+
+    .brand{
+      letter-spacing:.22em;
+      font-weight:700;
+      color:#fff;
+      opacity:.9;
+      font-size:14px;
+    }
+
+    .title{
+      margin:18px 0 10px;
+      font-size: clamp(42px, 7vw, 86px);
+      font-weight:900;
+      line-height:0.95;
+      text-transform:uppercase;
+      background: linear-gradient(180deg, #fff, #cfd3df);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .subtitle{
+      margin:0 auto 22px;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: clamp(14px, 2.2vw, 18px);
+    }
+
+    .scanline{
+      height:2px;
+      width:100%;
+      background: linear-gradient(90deg, transparent, rgba(255,46,99,.9), transparent);
+      filter: blur(.2px);
+      animation: sweep 1.6s ease-in-out infinite;
+      margin: 22px 0 10px;
+      box-shadow: var(--glow);
+    }
+    @keyframes sweep{
+      0%{transform: translateX(-30%)}
+      50%{transform: translateX(30%)}
+      100%{transform: translateX(-30%)}
+    }
+
+    .intro-actions{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .btn{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:12px 16px;
+      border-radius:14px;
+      cursor:pointer;
+      transition: transform .15s ease, background .2s ease, border .2s ease;
+      font-weight:600;
+      letter-spacing:.02em;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      backdrop-filter: blur(8px);
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.1)}
+    .btn.primary{
+      border-color: rgba(255,46,99,.35);
+      background: linear-gradient(135deg, rgba(255,46,99,.85), rgba(255,111,163,.65));
+      box-shadow: var(--glow);
+    }
+    .btn.primary:hover{background: linear-gradient(135deg, rgba(255,46,99,.95), rgba(255,111,163,.72))}
+    .hint{
+      margin-top:14px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+    }
+
+    /* ====== CONTENIDO ====== */
+    header{
+      padding: 28px 16px 8px;
+      position: sticky;
+      top:0;
+      background: linear-gradient(180deg, rgba(5,6,10,.92), rgba(5,6,10,.65), transparent);
+      backdrop-filter: blur(10px);
+      z-index: 20;
+    }
+
+    .wrap{
+      width:min(980px, 92vw);
+      margin: 0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      padding:12px 14px;
+      border-radius:16px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 220px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: var(--accent);
+      box-shadow: var(--glow);
+    }
+    .logo strong{
+      font-size: 14px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    main{padding: 22px 0 70px;}
+
+    .hero{
+      margin-top:16px;
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(800px 420px at 10% 0%, rgba(255,46,99,.22), transparent 60%),
+        radial-gradient(720px 380px at 80% 20%, rgba(255,111,163,.18), transparent 60%),
+        rgba(255,255,255,.03);
+      overflow:hidden;
+      position:relative;
+      padding: 22px 18px 18px;
+    }
+
+    .hero h1{
+      margin: 8px 0 6px;
+      font-size: clamp(26px, 4.4vw, 44px);
+      line-height:1.1;
+    }
+    .hero p{
+      margin:0;
+      color: var(--muted);
+      max-width: 68ch;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .badge{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.86);
+      padding:8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing:.03em;
+    }
+
+    /* ====== Timeline ====== */
+    .section-title{
+      margin: 28px 2px 12px;
+      font-size: 14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.72);
+    }
+
+    .timeline{
+      position:relative;
+      margin-top: 10px;
+      padding-left: 18px;
+    }
+    .timeline:before{
+      content:"";
+      position:absolute;
+      left:8px;
+      top:0;
+      bottom:0;
+      width:2px;
+      background: linear-gradient(180deg, rgba(255,46,99,.75), rgba(255,111,163,.25), rgba(255,46,99,.15));
+      box-shadow: var(--glow);
+      border-radius: 2px;
+    }
+
+    .event{
+      position:relative;
+      margin: 14px 0;
+      padding: 14px 14px 14px 14px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      overflow:hidden;
+    }
+    .event:before{
+      content:"";
+      position:absolute;
+      left:-18px;
+      top: 18px;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background: var(--accent);
+      box-shadow: var(--glow);
+      border: 3px solid rgba(5,6,10,.9);
+    }
+    .event .date{
+      font-size: 12px;
+      color: rgba(255,255,255,.68);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .event h3{
+      margin: 6px 0 8px;
+      font-size: 18px;
+    }
+    .event p{
+      margin:0;
+      color: var(--muted);
+      line-height:1.5;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:12px;
+      margin-top: 16px;
+    }
+    .card{
+      grid-column: span 6;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      padding: 14px;
+      min-height: 120px;
+    }
+    .card h4{margin:0 0 8px;}
+    .card p{margin:0;color:var(--muted);line-height:1.5}
+    @media (max-width: 760px){
+      .card{grid-column: span 12;}
+      .logo{min-width:unset}
+    }
+
+    footer{
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      padding: 24px 0 30px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- INTRO -->
+  <section class="intro" id="intro">
+    <div class="intro-inner">
+      <div class="brand">PRESENTA</div>
+      <div class="title">VALERY</div>
+      <p class="subtitle">
+        Una película hecha de momentos, risas, canciones y recuerdos que no quiero perder.
+      </p>
+
+      <div class="scanline"></div>
+
+      <div class="intro-actions">
+        <button class="btn primary" id="btnPlay">▶ Iniciar película</button>
+        <button class="btn" id="btnSkip">Saltar intro</button>
+      </div>
+
+      <div class="hint">Tip: puedes activar música y luego bajar a la línea de tiempo ✨</div>
+    </div>
+  </section>
+
+  <!-- AUDIO (coloca tu archivo en el repo: valery.mp3) -->
+  <audio id="music" src="valery.mp3" preload="auto"></audio>
+
+  <!-- HEADER -->
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="logo">
+          <div class="dot"></div>
+          <strong>Nuestra Película</strong>
+        </div>
+        <div class="controls">
+          <button class="btn" id="toggleMusic">🎵 Música: OFF</button>
+          <button class="btn" id="goTimeline">🗓️ Ir a línea de tiempo</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="wrap">
+    <section class="hero">
+      <div class="brand">TEMPORADA 01 · EPISODIO ÚNICO</div>
+      <h1>Valery & Yo — Nuestro trailer de recuerdos</h1>
+      <p>
+        Esto es un boceto. Aquí irán tus fotos, frases y fechas. La idea es que se sienta como una película romántica
+        con estética de streaming.
+      </p>
+
+      <div class="badge-row">
+        <div class="badge">💖 Romance</div>
+        <div class="badge">✨ Recuerdos</div>
+        <div class="badge">🎬 Cinemático</div>
+        <div class="badge">📸 Galería (próximamente)</div>
+      </div>
+    </section>
+
+    <div class="section-title" id="timelineTitle">Línea de tiempo</div>
+    <section class="timeline" id="timeline">
+      <!-- EVENTOS (boceto) -->
+      <article class="event">
+        <div class="date">DÍA 01 · (pon la fecha)</div>
+        <h3>El comienzo</h3>
+        <p>Describe en 1–2 líneas qué pasó. Ej: “Ese día supe que quería cuidarte.”</p>
+      </article>
+
+      <article class="event">
+        <div class="date">DÍA 02 · (pon la fecha)</div>
+        <h3>Nuestro primer plan</h3>
+        <p>Ej: “Una salida sencilla, pero se sintió como escena de película.”</p>
+      </article>
+
+      <article class="event">
+        <div class="date">DÍA 03 · (pon la fecha)</div>
+        <h3>La canción</h3>
+        <p>Ej: “Desde aquí, esta canción quedó con nosotros.”</p>
+      </article>
+
+      <article class="event">
+        <div class="date">DÍA 04 · (pon la fecha)</div>
+        <h3>Momento favorito</h3>
+        <p>Ej: “Risas, miradas, y esa paz que no se compra.”</p>
+      </article>
+    </section>
+
+    <div class="section-title">Paneles (para fotos / frases / capítulos)</div>
+    <section class="grid">
+      <div class="card">
+        <h4>📸 Galería (boceto)</h4>
+        <p>Aquí luego metemos un carrusel de fotos o cuadritos con tus momentos.</p>
+      </div>
+      <div class="card">
+        <h4>💬 Frases</h4>
+        <p>Un espacio para frases cortas: “contigo todo tiene sentido”, etc.</p>
+      </div>
+      <div class="card">
+        <h4>🎬 Créditos</h4>
+        <p>Podemos poner “Dirigido por…”, “Protagonistas…”, “Banda sonora…”</p>
+      </div>
+      <div class="card">
+        <h4>🗓️ Próximo capítulo</h4>
+        <p>Un bloque con contador para una fecha especial (aniversario / cita).</p>
+      </div>
+    </section>
+
+    <footer>
+      Hecho con cariño ✨ (boceto de plantilla). Puedes editar textos y fechas cuando quieras.
+    </footer>
+  </main>
+
+  <script>
+    const intro = document.getElementById("intro");
+    const btnPlay = document.getElementById("btnPlay");
+    const btnSkip = document.getElementById("btnSkip");
+    const music = document.getElementById("music");
+    const toggleMusic = document.getElementById("toggleMusic");
+    const goTimeline = document.getElementById("goTimeline");
+    const timelineTitle = document.getElementById("timelineTitle");
+
+    let musicOn = false;
+
+    function hideIntro(){
+      intro.classList.add("hide");
+      setTimeout(()=> intro.style.display="none", 900);
+    }
+
+    async function startMovie(){
+      hideIntro();
+      try{
+        await music.play();
+        musicOn = true;
+        toggleMusic.textContent = "🎵 Música: ON";
+      }catch(e){
+        // Si el navegador bloquea autoplay, queda listo para tocar "Música"
+        musicOn = false;
+        toggleMusic.textContent = "🎵 Música: OFF";
+      }
+    }
+
+    btnPlay.addEventListener("click", startMovie);
+    btnSkip.addEventListener("click", hideIntro);
+
+    toggleMusic.addEventListener("click", async ()=>{
+      if(!musicOn){
+        try{
+          await music.play();
+          musicOn = true;
+          toggleMusic.textContent = "🎵 Música: ON";
+        }catch(e){
+          alert("Tu navegador bloqueó el autoplay. Toca otra vez o revisa permisos de audio.");
+        }
+      }else{
+        music.pause();
+        musicOn = false;
+        toggleMusic.textContent = "🎵 Música: OFF";
+      }
+    });
+
+    goTimeline.addEventListener("click", ()=>{
+      timelineTitle.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  </script>
+</body>
+</html>
