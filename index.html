@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Desde que llegaste</title>
 
 <style>
@@ -14,6 +14,8 @@
   --muted:#a7afc3;
   --card: rgba(255,255,255,.03);
   --border: rgba(255,255,255,.08);
+  --glass: rgba(0,0,0,.55);
+  --shadow: 0 18px 55px rgba(0,0,0,.55);
 }
 
 *{box-sizing:border-box}
@@ -27,7 +29,7 @@ body{
   scroll-behavior:smooth;
 }
 
-/* INTRO */
+/* ===== INTRO ===== */
 .intro{
   position:fixed;
   inset:0;
@@ -36,6 +38,7 @@ body{
   align-items:center;
   justify-content:center;
   z-index:9999;
+  overflow:hidden;
   transition:.8s ease;
 }
 .intro.hide{
@@ -43,10 +46,19 @@ body{
   pointer-events:none;
   transform:scale(1.05);
 }
+.intro::before{
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(900px 500px at 50% 40%, rgba(255,46,99,.08), transparent 60%),
+              radial-gradient(1200px 700px at 50% 50%, transparent 40%, rgba(0,0,0,.85) 85%);
+  pointer-events:none;
+}
 .intro-inner{
+  position:relative;
   text-align:center;
   padding: 40px 18px;
   width:min(940px, 92vw);
+  z-index:2;
 }
 .brand{
   letter-spacing:6px;
@@ -61,6 +73,7 @@ body{
   text-transform:uppercase;
   background:linear-gradient(180deg,#fff,#cfcfcf,#fff);
   -webkit-background-clip:text;
+  background-clip:text;
   color:transparent;
   animation: zoomIn 2.5s cubic-bezier(.16,.84,.22,1) forwards;
   opacity:0;
@@ -75,7 +88,11 @@ body{
   margin-top:20px;
   font-size:18px;
   color:var(--muted);
+  opacity:0;
+  animation:fadeIn 1.8s ease 1.2s forwards;
 }
+@keyframes fadeIn{to{opacity:1}}
+
 .btn{
   margin-top:22px;
   padding:12px 22px;
@@ -86,360 +103,683 @@ body{
   font-weight:800;
   cursor:pointer;
   box-shadow:0 0 30px rgba(255,46,99,.3);
+  transition:.2s;
 }
+.btn:hover{transform:scale(1.07)}
 .audio-status{
   margin-top:14px;
   font-size:12px;
   color: rgba(255,255,255,.65);
+  line-height:1.4;
 }
 
-/* TOPBAR */
+/* ===== TOPBAR ===== */
 .topbar{
   position: sticky;
   top:0;
+  z-index:20;
   background: rgba(5,6,10,.92);
-  padding:14px 5%;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.topbar-inner{
+  width:min(1100px, 92vw);
+  margin:0 auto;
+  padding:14px 0;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,.04);
+}
+.dot{
+  width:10px;height:10px;border-radius:50%;
+  background: var(--accent);
+  box-shadow:0 0 18px rgba(255,46,99,.45);
+}
+.counter{
+  font-size:12px;
+  color: rgba(255,255,255,.75);
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+}
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
 .btn2{
-  padding:8px 12px;
-  border-radius:12px;
+  padding:10px 12px;
+  border-radius:14px;
   border:1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.06);
   color:#fff;
   cursor:pointer;
+  font-weight:700;
+  transition:.2s;
 }
+.btn2:hover{background: rgba(255,255,255,.10); transform: translateY(-1px);}
 
-/* SECTION */
+/* ===== SECCIÓN ===== */
 .section{
-  width:90%;
-  max-width:1000px;
-  margin:auto;
-  padding:60px 0;
+  width:min(1100px, 92vw);
+  margin:0 auto;
+  padding: 52px 0 10px;
 }
 .section h2{
-  text-transform:uppercase;
-  letter-spacing:3px;
+  font-size: 26px;
+  margin:0 0 10px;
+  letter-spacing:.12em;
+  text-transform: uppercase;
+}
+.lead{
+  color: var(--muted);
+  max-width: 88ch;
+  line-height: 1.6;
+  margin: 0 0 22px;
 }
 
-/* TIMELINE */
+/* ===== TIMELINE ===== */
 .timeline{
   position:relative;
-  padding-left:30px;
+  padding-left:26px;
 }
 .timeline::before{
   content:"";
   position:absolute;
-  left:10px;
+  left:8px;
   top:0;
   bottom:0;
   width:2px;
-  background:var(--accent);
+  background: linear-gradient(180deg, rgba(255,46,99,.85), rgba(255,111,163,.25), rgba(255,46,99,.15));
+  box-shadow: 0 0 18px rgba(255,46,99,.25);
+  border-radius:2px;
 }
+
 .event{
   position:relative;
-  margin-bottom:40px;
-  padding:20px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:15px;
+  margin: 0 0 16px;
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  overflow:hidden;
+
+  /* anim base */
+  opacity:0;
+  transform: translateY(18px);
+  transition: .65s cubic-bezier(.18,.9,.2,1);
 }
+.event.show{
+  opacity:1;
+  transform: translateY(0);
+}
+
 .event::before{
   content:"";
   position:absolute;
-  left:-27px;
-  top:20px;
-  width:15px;
-  height:15px;
-  background:var(--accent);
-  border-radius:50%;
+  left:-28px;
+  top: 18px;
+  width:14px;height:14px;border-radius:50%;
+  background: var(--accent);
+  box-shadow:0 0 16px rgba(255,46,99,.55);
+  border: 3px solid rgba(5,6,10,.95);
+}
+.event-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
 }
 .date{
   font-size:12px;
-  opacity:.7;
+  opacity:.85;
+  letter-spacing:.14em;
+  color: rgba(255,255,255,.7);
+  text-transform: uppercase;
 }
 .tag{
   font-size:12px;
-  margin-left:10px;
-  opacity:.8;
+  padding:6px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.22);
+  color: rgba(255,255,255,.82);
+}
+.event h3{
+  margin:10px 0 8px;
+  font-size:18px;
+}
+.event p{
+  margin:0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 .quote{
   margin-top:10px;
-  font-style:italic;
-  opacity:.8;
+  padding:10px 12px;
+  border-left: 2px solid rgba(255,46,99,.8);
+  background: rgba(0,0,0,.18);
+  border-radius: 12px;
+  color: rgba(255,255,255,.78);
+  font-style: italic;
+}
+.media{
+  margin-top:12px;
+  border-radius: 16px;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.2);
 }
 .media img{
   width:100%;
-  border-radius:12px;
-  margin-top:10px;
+  height:260px;
+  object-fit:cover;
+  display:block;
 }
+@media (max-width:560px){
+  .media img{height:200px}
+}
+
+.event-actions{
+  margin-top:12px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.smallbtn{
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color:#fff;
+  cursor:pointer;
+  font-weight:800;
+}
+.smallbtn:hover{background: rgba(255,255,255,.10)}
+
+/* ===== MODAL ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(10px);
+  z-index:99999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.modal.show{display:flex;}
+.modal-card{
+  width:min(980px, 96vw);
+  max-height: 92vh;
+  overflow:auto;
+  background: rgba(10,10,14,.92);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+}
+.modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 16px 0;
+}
+.modal-title{
+  margin:0;
+  font-size: 20px;
+}
+.modal-sub{
+  margin:6px 0 0;
+  color: rgba(255,255,255,.70);
+  font-size: 12px;
+  letter-spacing:.12em;
+  text-transform: uppercase;
+}
+.closebtn{
+  border:none;
+  cursor:pointer;
+  padding:10px 12px;
+  border-radius:14px;
+  background: rgba(255,255,255,.08);
+  color:#fff;
+  font-weight:900;
+}
+.closebtn:hover{background: rgba(255,255,255,.12)}
+.modal-body{
+  padding: 14px 16px 16px;
+}
+.modal-img{
+  width:100%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.2);
+  display:none;
+}
+.modal-img.show{display:block;}
+.modal-text{
+  margin:12px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.modal-quote{
+  margin-top:12px;
+  padding:12px 14px;
+  border-left: 2px solid rgba(255,46,99,.8);
+  background: rgba(0,0,0,.22);
+  border-radius: 14px;
+  color: rgba(255,255,255,.82);
+  font-style: italic;
+}
+
 footer{
   text-align:center;
-  padding:40px;
+  padding:40px 0 60px;
   font-size:12px;
-  opacity:.6;
+  color:#777;
 }
 </style>
 </head>
 
 <body>
 
+<!-- INTRO -->
 <section class="intro" id="intro">
   <div class="intro-inner">
     <div class="brand">PRESENTA</div>
     <div class="title">DESDE QUE LLEGASTE</div>
     <div class="subtitle">Momentos, risas, enojos y recuerdos que no quiero perder.</div>
-    <button class="btn" id="btnPlay">▶ Iniciar Linea de Tiempo</button>
+    <button class="btn" id="btnPlay">▶ Iniciar Línea de Tiempo</button>
     <div class="audio-status" id="audioStatus">Música cargando...</div>
   </div>
 </section>
 
-<audio id="music" src="valery.mp3" preload="auto"></audio>
+<audio id="music" src="valery.mp3" preload="auto" playsinline></audio>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <strong>Nuestra Linea de Tiempo</strong>
-  <button class="btn2" id="toggleMusic">🎵 Música: OFF</button>
+  <div class="topbar-inner">
+    <div class="left">
+      <div class="pill">
+        <span class="dot"></span>
+        <strong>Nuestra Película</strong>
+      </div>
+      <div class="counter" id="counter">Desde 21 Sep 2025: …</div>
+    </div>
+    <div class="controls">
+      <button class="btn2" id="toggleMusic">🎵 Música: OFF</button>
+      <button class="btn2" id="goTimeline">🗓️ Línea de tiempo</button>
+    </div>
+  </div>
 </div>
 
-<section class="section">
+<section class="section" id="timelineSection">
   <h2>Nuestra historia</h2>
+  <p class="lead">Cada momento aparece con animación. Puedes abrir un “capítulo” en pantalla completa con <strong>Ver momento</strong>.</p>
   <div class="timeline" id="timeline"></div>
 </section>
 
 <footer>Hecho con cariño ✨</footer>
 
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <h3 class="modal-title" id="modalTitle"></h3>
+        <div class="modal-sub" id="modalMeta"></div>
+      </div>
+      <button class="closebtn" id="closeModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <img class="modal-img" id="modalImg" alt="">
+      <div class="modal-text" id="modalText"></div>
+      <div class="modal-quote" id="modalQuote" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
 <script>
-
+/* ====== TUS EVENTOS (SIN ROMPER JS) ====== */
 const TIMELINE = [
-
-{
-  date: "21 Sep 2025",
-  title: "El día de la kermesse",
-  text: `Imposible olvidarme de nuestra primera salida oficial. Fuimos a la kermesse de mi colegio y, aunque me moría de nervios y todavía no teníamos esa confianza de ahora, estar contigo se sintió súper natural. Me acuerdo que había esos silencios típicos del principio, pero me la pasé increíble igual. Me encantó tu compañía desde que llegamos. Estuvo genial que jugamos esos juegos de mesa y después nos subimos a los juegos mecánicos, que fue el momento perfecto para soltar los nervios. Almorzamos, caminamos un montón y compramos esas galletas que fueron el detalle ideal para ir cerrando la tarde. El cierre con el concierto fue lo mejor; ahí supe que esa iba a ser la primera de muchísimas veces más. Gracias por hacer que ese día fuera tan bonito desde el segundo uno.`,
-  tag: "Planes",
-  quote: "La primera de muchísimas veces más.",
-  img: "fotos/kermesse.jpg"
-},
-
-{
-  date: "03 Oct 2025",
-  title: "El día de los makis",
-  text: `Ese viernes fue diferente porque ya se sentía más esa dinámica de vernos en el día a día. Te recogí de la universidad después de mi trabajo y, aunque fue un plan más movido porque tuvimos que ir a recoger tus cosas para tu activación, me gustó mucho acompañarte en tus pendientes. Siento que esos momentos, aunque parezcan simples, son los que más cuentan. Para cerrar el día, fuimos a comer makis a Kaito. Fue el plan perfecto para relajarnos después de todo el correcorre. Me acuerdo que la pasamos súper bien ahí, comiendo tranquilos y simplemente disfrutando de estar los dos juntos después de un día largo.`,
-  tag: "Planes",
-  quote: "Disfrutando de estar juntos después de un día largo.",
-  img: "fotos/makis.jpg"
-},
-
-{
-  date: "14 Oct 2025",
-  title: "El detalle de los tulipanes",
-  text: `Esta fecha la tengo grabada porque fue un momento de aprender y de valorar lo que tenemos. Te llevé ese ramo de tulipanes lilas porque sabía que me había equivocado; sentía que había sido poco considerado contigo y de verdad me importaba arreglar las cosas. Me acuerdo perfecto de la nota que te escribí: Siento mucho haber sido poco considerado contigo. Valoro nuestra amistad y quiero que sepas cuánto lamento mi error. Espero me puedas disculpar. En ese momento, mi prioridad era cuidar nuestra amistad y que supieras que me importabas lo suficiente como para reconocer mis fallas. Siento que ese día fue clave para que hoy estemos donde estamos.`,
-  tag: "Planes",
-  quote: "Valoro nuestra amistad y quiero que sepas cuánto lamento mi error.",
-  img: "fotos/tulipanes.jpg"
-},
-
-{
-  date: "17 Oct 2025",
-  title: "Tarde en el Parque de la Amistad",
-  text: `Ese viernes fue el plan perfecto para cerrar la semana y bajamos mil cambios. Me gustó mucho que saliéramos con Luna, porque jugar con ella hizo que todo se sintiera mucho más relajado. Fue una tarde de esas de simplemente caminar, conversar de todo un poco y seguir conociéndonos más a fondo mientras dábamos vueltas por el parque. Terminamos cenando algo tranqui por ahí, pero lo que más me quedó grabado fue lo bien que se siente compartir esos momentos contigo, sin pretensiones, solo nosotros (y Luna, obvio).`,
-  tag: "Planes",
-  quote: "Compartir momentos contigo sin pretensiones.",
-  img: "fotos/parque_amistad.jpg"
-},
-
-{
-  date: "23 Oct 2025",
-  title: "El detalle para Luna",
-  text: `Este día no fue una salida como tal, pero fue un momento que quería que estuviera aquí. Pasé por tu casa después de la chamba solo para llevarle un detalle a Luna: su propia camiseta de la U con su nombre. Me dio mucha risa y gusto verla así; fue un gesto que me nació porque sé lo importante que es ella para ti y, de alguna forma, yo también quería empezar a formar parte de su mundo. Siento que esos minutos en la puerta de tu casa valieron totalmente la pena.`,
-  tag: "Planes",
-  quote: "Esos minutos en la puerta de tu casa valieron la pena.",
-  img: "fotos/camiseta_luna.jpg"
-},
-
-{
-  date: "24 Oct 2025",
-  title: "El día que me declaré",
-  text: `Este fue uno de los días más importantes para mí, si no el que más. Fuimos al cine por primera vez y nos aventamos doble función: Good Boy y Black Phone 2. Me la pasé increíble contigo, pero lo que de verdad me marcó fue lo que pasó después. Ya estábamos llegando a tu casa cuando te dije: "Tengo algo que decirte". Me acuerdo perfecto de esos 5 minutos de silencio en los que no me salían las palabras; estaba temblando de los nervios, muerto de miedo por no saber qué me ibas a decir. Pero al final solté el "estoy enamorado de ti". Fue un alivio gigante y se sintió demasiado bonito cuando me respondiste que yo también te gustaba. Fue el momento en el que todo cambió para mejor.`,
-  tag: "Planes",
-  quote: "Tengo algo que decirte...",
-  img: "fotos/cine_confesion.jpg"
-},
-
-{
-  date: "28 Oct 2025",
-  title: "Nuestro primer beso",
-  text: `Ese día te pasé a buscar después de la chamba. El plan era súper tranqui: comer algo y conversar de algunas cosas que teníamos pendientes, pero después de eso no sabíamos qué más hacer. Tú diste la idea de ir a un parque y terminamos caminando un buen rato mientras seguíamos hablando de todo. Me acuerdo que en un momento te asustaste con algo y me agarraste el brazo, y poquito después, casi sin darnos cuenta, nos agarramos de la mano. Caminamos un rato más así, hasta que nos miramos y finalmente pasó nuestro primer beso. Sinceramente, fue demasiado bonito por la forma en que se dio, así de la nada y súper natural. Fue el cierre perfecto para esa caminata.`,
-  tag: "Planes",
-  quote: "El cierre perfecto para esa caminata.",
-  img: "fotos/primer_beso.jpg"
-},
-
-{
-  date: "30 Oct 2025",
-  title: "Tu partido de fútbol",
-  text: `Esta vez me tocó ser el espectador y me gustó mucho la experiencia. Fue la primera vez que te acompañé a jugar fútbol con las chicas de tu trabajo. Me divertí viendo el partido y, sobre todo, estando ahí para apoyarte. Fue un plan diferente, pero de esos que sirven para seguir integrándonos más el uno en la vida del otro.`,
-  tag: "Planes",
-  quote: "Estando ahí para apoyarte.",
-  img: "fotos/futbol.jpg"
-},
-
-{
-  date: "15 Nov 2025",
-  title: "Primera vez en mi casa",
-  text: `Esos días me tocó estar en la tribuna dándote barra. Te fui a ver jugar el campeonato de tu trabajo y fue genial acompañarte en todo el proceso hasta que terminaron ganando el torneo. Pero el 15 fue doblemente especial porque, después de celebrar el triunfo, te llevé a mi casa por primera vez. Almorzamos con mi familia y, aunque era un paso importante, todo fluyó súper bien. Ya en la tarde, nos regalamos un momento solo para nosotros: nos pusimos a armar una casita de jengibre (que fue todo un reto) y terminamos haciendo sesión de mascarillas faciales los dos. Fue un día completísimo; desde la emoción del fútbol hasta la tranquilidad de estar en casa haciendo planes juntos.`,
-  tag: "Planes",
-  quote: "Desde la emoción del fútbol hasta la tranquilidad de casa.",
-  img: "fotos/casa_mascarillas.jpg"
-},
-
-{
-  date: "19 Nov 2025",
-  title: "El ramo de lirios y tulipanes",
-  text: `Esta fecha fue difícil pero necesaria. Me equivoqué otra vez y ese día nos vimos después de tu clase en la universidad. Me sentía muy mal por algo que nunca debí haber hecho y fui a buscarte con un ramo gigante de lirios y tulipanes, y una bolsita de Aruma, para intentar demostrarte lo arrepentido que estaba. Te entregué esa carta donde te abrí el corazón: "No hay palabras que puedan deshacer lo ocurrido..." y te dije que mi mayor deseo era arreglar todo y recuperar tu confianza. Cerré pidiéndote perdón y ese último baile porque de verdad te quiero mucho. Siento que ese momento fue una prueba de fuego para nosotros y de lo mucho que me importas.`,
-  tag: "Planes",
-  quote: "Mi mayor deseo era arreglar todo y recuperar tu confianza.",
-  img: "fotos/perdon.jpg"
-},
-
-{
-  date: "29 Nov 2025",
-  title: "Tour por Villa El Salvador",
-  text: `Ese día salimos a pasear por Villa por primera vez y fue una experiencia diferente. Me llevaste a recorrer las avenidas y terminamos haciendo un "taste test" de cachangas, porque yo nunca las había probado. Estuvo genial conocer un poco más de tu mundo. Me acuerdo que después nos quedamos en el auto conversando tranquilos; fue un plan súper sencillo pero me gustó mucho compartir ese momento así contigo.`,
-  tag: "Planes",
-  quote: "Conociendo un poco más de tu mundo.",
-  img: "fotos/villa_cachangas.jpg"
-},
-
-{
-  date: "03 Dic 2025",
-  title: "Tu último día en la universidad",
-  text: `Este fue, sin duda, uno de los días más emotivos para los dos. Verte cerrar tu etapa como estudiante fue algo que me llenó de orgullo. Me acuerdo perfecto de las veces que nos amanecimos con ese paper, dándole vueltas a todo para que saliera bien; por eso, verte lograr tu bachiller en Ingeniería Industrial se sintió como un triunfo compartido. Me hace demasiado feliz verte cumplir tus metas y quiero que sepas que siempre voy a estar aquí para apoyarte en cada paso que des. Estoy muy orgulloso de ti.`,
-  tag: "Planes",
-  quote: "Siempre voy a estar aquí para apoyarte en cada paso.",
-  img: "fotos/graduacion.jpg"
-},
-
-{
-  date: "07 Dic 2025",
-  title: "El cumple de Alexia en Cieneguilla",
-  text: `No podía faltar ese fin de semana. Nos fuimos a Cieneguilla para el cumple de tu amiga Alexia y la verdad es que la pasamos increíble. Fue un viaje corto pero lleno de momentos muy bonitos donde nos desconectamos de todo para divertirnos y compartir con los demás. Me gustó mucho estar ahí contigo y la confianza de esos días, desde las risas hasta el hecho de dormir juntos. Siento que ese fin de semana nos unió un montón.`,
-  tag: "Planes",
-  quote: "Ese fin de semana nos unió un montón.",
-  img: "fotos/cieneguilla.jpg"
-},
-
-{
-  date: "12 Dic 2025",
-  title: "Alitas y distancia",
-  text: `Ese viernes te recogí después del trabajo y fuimos a mi casa con el plan de preparar alitas acevichadas mientras tomábamos vino. Lo que empezó como una noche divertida en la cocina terminó siendo un punto de quiebre, porque después de eso ocurrió algo que hizo que nos dejáramos de hablar como solíamos hacerlo. Fue un momento difícil que cambió nuestra dinámica por un tiempo, marcando una distancia que dolió, pero que también forma parte de todo lo que hemos pasado para llegar a donde estamos hoy.`,
-  tag: "Planes",
-  quote: "Un momento difícil que cambió nuestra dinámica.",
-  img: "fotos/noche_alitas.jpg"
-},
-
-{
-  date: "28 Dic 2025",
-  title: "Nuestra conversación",
-  text: `Después de esos días de distancia que se sintieron eternos, el domingo 28 nos sentamos a conversar. Fue un momento necesario para poner todo sobre la mesa y, afortunadamente, logramos arreglar las cosas. Me sentí mucho más tranquilo después de hablar contigo; me hizo dar cuenta de que, a pesar de los baches y los malentendidos, las ganas de estar juntos y de cuidar lo que tenemos siempre fueron más fuertes. Cerramos el año de la mejor manera: eligiéndonos de nuevo.`,
-  tag: "Planes",
-  quote: "Las ganas de estar juntos siempre fueron más fuertes.",
-  img: "fotos/reconciliacion.jpg"
-},
-
-{
-  date: "01 Ene 2026",
-  title: "Escapada a Ica",
-  text: `No hubo mejor forma de arrancar el año que haciendo maletas y saliendo de Lima. Nos fuimos a Ica todo un día y fue increíble. La pasamos súper divertido, simplemente disfrutando de estar lejos de todo, riéndonos y aprovechando cada momento del viaje. Siento que ese día fue como un borrón y cuenta nueva, una forma de decir que este año venía con todo para nosotros. Estar contigo ahí, pasando un día tan bueno, me hizo confirmar que no hay mejor compañía para empezar cualquier aventura.`,
-  tag: "Viaje",
-  quote: "Este año venía con todo para nosotros.",
-  img: "fotos/viaje_ica.jpg"
-},
-
-{
-  date: "04 Ene 2026",
-  title: "La previa de tu cumple",
-  text: `Un día antes de tu cumpleaños nos fuimos a la playa porque decidiste hacer paddle. Me encantó verte ahí, activa y disfrutando del mar; fue un plan súper fresco y diferente para empezar la celebración. Ya por la noche, estuvimos en la reunión para esperar las doce. Fue muy especial estar ahí contigo en ese conteo regresivo, compartiendo con tus amigos y dándote esa sorpresa con los mariachis apenas empezó tu día. Verte feliz con la música y ser parte de ese momento apenas cumpliste tus 22 fue lo mejor de la noche.`,
-  tag: "Cumpleaños",
-  quote: "Verte feliz con la música fue lo mejor de la noche.",
-  img: "fotos/previa_cumple.jpg"
-},
-
-{
-  date: "05 Ene 2026",
-  title: "Tu cumpleaños",
-  text: `El día de tu cumple, después de la chamba, fuimos a comprar tu regalo para que fuera exactamente lo que querías. Para cerrar con broche de oro, fuimos a cenar al Museo Larco. Fue una noche increíble; el restaurante es precioso y se sintió como el lugar perfecto para la ocasión. Me encantó compartir esa cena contigo, celebrando tu vida en un lugar tan especial y disfrutando de nuestra compañía.`,
-  tag: "Cumpleaños",
-  quote: "Celebrando tu vida en un lugar tan especial.",
-  img: "fotos/cena_larco.jpg"
-},
-
-{
-  date: "13 Ene 2026",
-  title: "Croissants y helado",
-  text: `Este día pasé por ti en la noche después de tu cita de depilación láser. No era un plan planeado con semanas, pero terminó siendo una noche súper agradable. Fuimos a comer algo al Polo, donde disfrutamos de unos croissants y un helado. Me gusta mucho que tengamos esa facilidad de vernos, sentarnos a comer algo rico y simplemente disfrutar de nuestra compañía sin que haga falta nada más.`,
-  tag: "Comida",
-  quote: "Salida casual.",
-  img: "fotos/lonche.jpg"
-},
-
-{
-  date: "17 Ene 2026",
-  title: "Tarde en el Centro de Lima",
-  text: `Ese día decidimos irnos al Centro para relajarnos después de una semana súper cargada. Empezamos almorzando rico en el Barrio Chino y después nos dedicamos a caminar, ver tiendas y comprar varias cosas. Fue un plan perfecto para distraernos, caminar un montón y disfrutar del caos del centro pero juntos. Me gustó mucho ese día porque, a pesar del movimiento de la zona, la pasamos muy tranquilos y nos sirvió para desconectarnos de la rutina.`,
-  tag: "Paseo",
-  quote: "Salida casual.",
-  img: "fotos/centro.jpg"
-},
-
-{
-  date: "23 Ene 2026 - 08 Feb 2026",
-  title: "Los posters y el reencuentro",
-  text: `El 23 de enero tuvimos un plan súper diferente: fuimos a pegar los posters de tus clases de matemáticas por mi casa y después terminamos comiendo helado. Parecía una tarde tranquila, pero después de ese día las cosas se complicaron y dejamos de hablar por dos semanas. Fue un tiempo de mucha reflexión y distancia, hasta que el domingo 8 de febrero finalmente nos sentamos a conversar. Pudimos aclarar todo, arreglar las cosas y decidir que lo que tenemos vale mucho más que cualquier malentendido.`,
-  tag: "Reencuentro",
-  quote: "Reencuentro.",
-  img: "fotos/febrero.jpg"
-},
-
-{
-  date: "10 Feb 2026",
-  title: "El gran paso",
-  text: `Después de todo lo que hemos vivido, de los momentos increíbles y también de los retos que supimos superar, llegó este día que nunca voy a olvidar. Fue el momento en el que decidí dejar de lado cualquier duda y te pedí oficialmente que fueras mi enamorada. Ese "sí" significa muchísimo para mí; es el inicio de una etapa más formal y bonita, y me hace inmensamente feliz saber que ahora caminamos de la mano con la seguridad de lo que sentimos. Gracias por aceptar ser parte de mi vida de esta manera.`,
-  tag: "Oficial",
-  quote: "Ahora caminamos de la mano con la seguridad de lo que sentimos.",
-  img: "fotos/enamorados.jpg"
-}
-
+  {
+    date: "21 Sep 2025",
+    title: "El día de la kermesse",
+    text: `Imposible olvidarme de nuestra primera salida oficial. Fuimos a la kermesse de mi colegio y, aunque me moría de nervios y todavía no teníamos esa confianza de ahora, estar contigo se sintió súper natural. Me acuerdo que había esos silencios típicos del principio, pero me la pasé increíble igual. Me encantó tu compañía desde que llegamos. Estuvo genial que jugamos esos juegos de mesa y después nos subimos a los juegos mecánicos, que fue el momento perfecto para soltar los nervios. Almorzamos, caminamos un montón y compramos esas galletas que fueron el detalle ideal para ir cerrando la tarde. El cierre con el concierto fue lo mejor; ahí supe que esa iba a ser la primera de muchísimas veces más. Gracias por hacer que ese día fuera tan bonito desde el segundo uno.`,
+    tag: "Planes",
+    quote: "La primera de muchísimas veces más.",
+    img: "fotos/kermesse.jpg"
+  },
+  {
+    date: "03 Oct 2025",
+    title: "El día de los makis",
+    text: `Ese viernes fue diferente porque ya se sentía más esa dinámica de vernos en el día a día. Te recogí de la universidad después de mi trabajo y, aunque fue un plan más movido porque tuvimos que ir a recoger tus cosas para tu activación, me gustó mucho acompañarte en tus pendientes. Siento que esos momentos, aunque parezcan simples, son los que más cuentan. Para cerrar el día, fuimos a comer makis a Kaito. Fue el plan perfecto para relajarnos después de todo el correcorre. Me acuerdo que la pasamos súper bien ahí, comiendo tranquilos y simplemente disfrutando de estar los dos juntos después de un día largo.`,
+    tag: "Planes",
+    quote: "Disfrutando de estar juntos después de un día largo.",
+    img: "fotos/makis.jpg"
+  },
+  {
+    date: "14 Oct 2025",
+    title: "El detalle de los tulipanes",
+    text: `Esta fecha la tengo grabada porque fue un momento de aprender y de valorar lo que tenemos. Te llevé ese ramo de tulipanes lilas porque sabía que me había equivocado; sentía que había sido poco considerado contigo y de verdad me importaba arreglar las cosas. Me acuerdo perfecto de la nota que te escribí: Siento mucho haber sido poco considerado contigo. Valoro nuestra amistad y quiero que sepas cuánto lamento mi error. Espero me puedas disculpar. En ese momento, mi prioridad era cuidar nuestra amistad y que supieras que me importabas lo suficiente como para reconocer mis fallas. Siento que ese día fue clave para que hoy estemos donde estamos.`,
+    tag: "Planes",
+    quote: "Valoro nuestra amistad y quiero que sepas cuánto lamento mi error.",
+    img: "fotos/tulipanes.jpg"
+  },
+  {
+    date: "17 Oct 2025",
+    title: "Tarde en el Parque de la Amistad",
+    text: `Ese viernes fue el plan perfecto para cerrar la semana y bajamos mil cambios. Me gustó mucho que saliéramos con Luna, porque jugar con ella hizo que todo se sintiera mucho más relajado. Fue una tarde de esas de simplemente caminar, conversar de todo un poco y seguir conociéndonos más a fondo mientras dábamos vueltas por el parque. Terminamos cenando algo tranqui por ahí, pero lo que más me quedó grabado fue lo bien que se siente compartir esos momentos contigo, sin pretensiones, solo nosotros (y Luna, obvio).`,
+    tag: "Planes",
+    quote: "Compartir momentos contigo sin pretensiones.",
+    img: "fotos/parque_amistad.jpg"
+  },
+  {
+    date: "23 Oct 2025",
+    title: "El detalle para Luna",
+    text: `Este día no fue una salida como tal, pero fue un momento que quería que estuviera aquí. Pasé por tu casa después de la chamba solo para llevarle un detalle a Luna: su propia camiseta de la U con su nombre. Me dio mucha risa y gusto verla así; fue un gesto que me nació porque sé lo importante que es ella para ti y, de alguna forma, yo también quería empezar a formar parte de su mundo. Siento que esos minutos en la puerta de tu casa valieron totalmente la pena.`,
+    tag: "Planes",
+    quote: "Esos minutos en la puerta de tu casa valieron la pena.",
+    img: "fotos/camiseta_luna.jpg"
+  },
+  {
+    date: "24 Oct 2025",
+    title: "El día que me animé",
+    text: `Este fue uno de los días más importantes para mí, si no el que más. Fuimos al cine por primera vez y nos aventamos doble función: Good Boy y Black Phone 2. Me la pasé increíble contigo, pero lo que de verdad me marcó fue lo que pasó después. Ya estábamos llegando a tu casa cuando te dije: "Tengo algo que decirte". Me acuerdo perfecto de esos 5 minutos de silencio en los que no me salían las palabras; estaba temblando de los nervios, muerto de miedo por no saber qué me ibas a decir. Pero al final solté el "estoy enamorado de ti". Fue un alivio gigante y se sintió demasiado bonito cuando me respondiste que yo también te gustaba. Fue el momento en el que todo cambió para mejor.`,
+    tag: "Planes",
+    quote: "Tengo algo que decirte...",
+    img: "fotos/cine_confesion.jpg"
+  },
+  {
+    date: "28 Oct 2025",
+    title: "Nuestro primer beso",
+    text: `Ese día te pasé a buscar después de la chamba. El plan era súper tranqui: comer algo y conversar de algunas cosas que teníamos pendientes, pero después de eso no sabíamos qué más hacer. Tú diste la idea de ir a un parque y terminamos caminando un buen rato mientras seguíamos hablando de todo. Me acuerdo que en un momento te asustaste con algo y me agarraste el brazo, y poquito después, casi sin darnos cuenta, nos agarramos de la mano. Caminamos un rato más así, hasta que nos miramos y finalmente pasó nuestro primer beso. Sinceramente, fue demasiado bonito por la forma en que se dio, así de la nada y súper natural. Fue el cierre perfecto para esa caminata.`,
+    tag: "Planes",
+    quote: "El cierre perfecto para esa caminata.",
+    img: "fotos/primer_beso.jpg"
+  },
+  {
+    date: "30 Oct 2025",
+    title: "Tu partido de fútbol",
+    text: `Esta vez me tocó ser el espectador y me gustó mucho la experiencia. Fue la primera vez que te acompañé a jugar fútbol con las chicas de tu trabajo. Me divertí viendo el partido y, sobre todo, estando ahí para apoyarte. Fue un plan diferente, pero de esos que sirven para seguir integrándonos más el uno en la vida del otro.`,
+    tag: "Planes",
+    quote: "Estando ahí para apoyarte.",
+    img: "fotos/futbol.jpg"
+  },
+  {
+    date: "15 Nov 2025",
+    title: "Primera vez en mi casa",
+    text: `Esos días me tocó estar en la tribuna dándote barra. Te fui a ver jugar el campeonato de tu trabajo y fue genial acompañarte en todo el proceso hasta que terminaron ganando el torneo. Pero el 15 fue doblemente especial porque, después de celebrar el triunfo, te llevé a mi casa por primera vez. Almorzamos con mi familia y, aunque era un paso importante, todo fluyó súper bien. Ya en la tarde, nos regalamos un momento solo para nosotros: nos pusimos a armar una casita de jengibre (que fue todo un reto) y terminamos haciendo sesión de mascarillas faciales los dos. Fue un día completísimo; desde la emoción del fútbol hasta la tranquilidad de estar en casa haciendo planes juntos.`,
+    tag: "Planes",
+    quote: "Desde la emoción del fútbol hasta la tranquilidad de casa.",
+    img: "fotos/casa_mascarillas.jpg"
+  },
+  {
+    date: "19 Nov 2025",
+    title: "El ramo de lirios y tulipanes",
+    text: `Esta fecha fue difícil pero necesaria. Me equivoqué otra vez y ese día nos vimos después de tu clase en la universidad. Me sentía muy mal por algo que nunca debí haber hecho y fui a buscarte con un ramo gigante de lirios y tulipanes, y una bolsita de Aruma, para intentar demostrarte lo arrepentido que estaba. Te entregué esa carta donde te abrí el corazón: "No hay palabras que puedan deshacer lo ocurrido..." y te dije que mi mayor deseo era arreglar todo y recuperar tu confianza. Cerré pidiéndote perdón y ese último baile porque de verdad te quiero mucho. Siento que ese momento fue una prueba de fuego para nosotros y de lo mucho que me importas.`,
+    tag: "Planes",
+    quote: "Mi mayor deseo era arreglar todo y recuperar tu confianza.",
+    img: "fotos/perdon.jpg"
+  },
+  {
+    date: "29 Nov 2025",
+    title: "Tour por Villa El Salvador",
+    text: `Ese día salimos a pasear por Villa por primera vez y fue una experiencia diferente. Me llevaste a recorrer las avenidas y terminamos haciendo un "taste test" de cachangas, porque yo nunca las había probado. Estuvo genial conocer un poco más de tu mundo. Me acuerdo que después nos quedamos en el auto conversando tranquilos; fue un plan súper sencillo pero me gustó mucho compartir ese momento así contigo.`,
+    tag: "Planes",
+    quote: "Conociendo un poco más de tu mundo.",
+    img: "fotos/villa_cachangas.jpg"
+  },
+  {
+    date: "03 Dic 2025",
+    title: "Tu último día en la universidad",
+    text: `Este fue, sin duda, uno de los días más emotivos para los dos. Verte cerrar tu etapa como estudiante fue algo que me llenó de orgullo. Me acuerdo perfecto de las veces que nos amanecimos con ese paper, dándole vueltas a todo para que saliera bien; por eso, verte lograr tu bachiller en Ingeniería Industrial se sintió como un triunfo compartido. Me hace demasiado feliz verte cumplir tus metas y quiero que sepas que siempre voy a estar aquí para apoyarte en cada paso que des. Estoy muy orgulloso de ti.`,
+    tag: "Planes",
+    quote: "Siempre voy a estar aquí para apoyarte en cada paso.",
+    img: "fotos/graduacion.jpg"
+  },
+  {
+    date: "07 Dic 2025",
+    title: "El cumple de Alexia en Cieneguilla",
+    text: `No podía faltar ese fin de semana. Nos fuimos a Cieneguilla para el cumple de tu amiga Alexia y la verdad es que la pasamos increíble. Fue un viaje corto pero lleno de momentos muy bonitos donde nos desconectamos de todo para divertirnos y compartir con los demás. Me gustó mucho estar ahí contigo y la confianza de esos días, desde las risas hasta el hecho de dormir juntos. Siento que ese fin de semana nos unió un montón.`,
+    tag: "Planes",
+    quote: "Ese fin de semana nos unió un montón.",
+    img: "fotos/cieneguilla.jpg"
+  },
+  {
+    date: "12 Dic 2025",
+    title: "Alitas y distancia",
+    text: `Ese viernes te recogí después del trabajo y fuimos a mi casa con el plan de preparar alitas acevichadas mientras tomábamos vino. Lo que empezó como una noche divertida en la cocina terminó siendo un punto de quiebre, porque después de eso ocurrió algo que hizo que nos dejáramos de hablar como solíamos hacerlo. Fue un momento difícil que cambió nuestra dinámica por un tiempo, marcando una distancia que dolió, pero que también forma parte de todo lo que hemos pasado para llegar a donde estamos hoy.`,
+    tag: "Planes",
+    quote: "Un momento difícil que cambió nuestra dinámica.",
+    img: "fotos/noche_alitas.jpg"
+  },
+  {
+    date: "28 Dic 2025",
+    title: "Nuestra conversación",
+    text: `Después de esos días de distancia que se sintieron eternos, el domingo 28 nos sentamos a conversar. Fue un momento necesario para poner todo sobre la mesa y, afortunadamente, logramos arreglar las cosas. Me sentí mucho más tranquilo después de hablar contigo; me hizo dar cuenta de que, a pesar de los baches y los malentendidos, las ganas de estar juntos y de cuidar lo que tenemos siempre fueron más fuertes. Cerramos el año de la mejor manera: eligiéndonos de nuevo.`,
+    tag: "Planes",
+    quote: "Las ganas de estar juntos siempre fueron más fuertes.",
+    img: "fotos/reconciliacion.jpg"
+  },
+  {
+    date: "01 Ene 2026",
+    title: "Escapada a Ica",
+    text: `No hubo mejor forma de arrancar el año que haciendo maletas y saliendo de Lima. Nos fuimos a Ica todo un día y fue increíble. La pasamos súper divertido, simplemente disfrutando de estar lejos de todo, riéndonos y aprovechando cada momento del viaje. Siento que ese día fue como un borrón y cuenta nueva, una forma de decir que este año venía con todo para nosotros. Estar contigo ahí, pasando un día tan bueno, me hizo confirmar que no hay mejor compañía para empezar cualquier aventura.`,
+    tag: "Viaje",
+    quote: "Este año venía con todo para nosotros.",
+    img: "fotos/viaje_ica.jpg"
+  },
+  {
+    date: "04 Ene 2026",
+    title: "La previa de tu cumple",
+    text: `Un día antes de tu cumpleaños nos fuimos a la playa porque decidiste hacer paddle. Me encantó verte ahí, activa y disfrutando del mar; fue un plan súper fresco y diferente para empezar la celebración. Ya por la noche, estuvimos en la reunión para esperar las doce. Fue muy especial estar ahí contigo en ese conteo regresivo, compartiendo con tus amigos y dándote esa sorpresa con los mariachis apenas empezó tu día. Verte feliz con la música y ser parte de ese momento apenas cumpliste tus 22 fue lo mejor de la noche.`,
+    tag: "Cumpleaños",
+    quote: "Verte feliz con la música fue lo mejor de la noche.",
+    img: "fotos/previa_cumple.jpg"
+  },
+  {
+    date: "05 Ene 2026",
+    title: "Tu cumpleaños",
+    text: `El día de tu cumple, después de la chamba, fuimos a comprar tu regalo para que fuera exactamente lo que querías. Para cerrar con broche de oro, fuimos a cenar al Museo Larco. Fue una noche increíble; el restaurante es precioso y se sintió como el lugar perfecto para la ocasión. Me encantó compartir esa cena contigo, celebrando tu vida en un lugar tan especial y disfrutando de nuestra compañía.`,
+    tag: "Cumpleaños",
+    quote: "Celebrando tu vida en un lugar tan especial.",
+    img: "fotos/cena_larco.jpg"
+  },
+  {
+    date: "13 Ene 2026",
+    title: "Croissants y helado",
+    text: `Este día pasé por ti en la noche después de tu cita de depilación láser. No era un plan planeado con semanas, pero terminó siendo una noche súper agradable. Fuimos a comer algo al Polo, donde disfrutamos de unos croissants y un helado. Me gusta mucho que tengamos esa facilidad de vernos, sentarnos a comer algo rico y simplemente disfrutar de nuestra compañía sin que haga falta nada más.`,
+    tag: "Comida",
+    quote: "Salida casual.",
+    img: "fotos/lonche.jpg"
+  },
+  {
+    date: "17 Ene 2026",
+    title: "Tarde en el Centro de Lima",
+    text: `Ese día decidimos irnos al Centro para relajarnos después de una semana súper cargada. Empezamos almorzando rico en el Barrio Chino y después nos dedicamos a caminar, ver tiendas y comprar varias cosas. Fue un plan perfecto para distraernos, caminar un montón y disfrutar del caos del centro pero juntos. Me gustó mucho ese día porque, a pesar del movimiento de la zona, la pasamos muy tranquilos y nos sirvió para desconectarnos de la rutina.`,
+    tag: "Paseo",
+    quote: "Salida casual.",
+    img: "fotos/centro.jpg"
+  },
+  {
+    date: "23 Ene 2026 - 08 Feb 2026",
+    title: "Los posters y el reencuentro",
+    text: `El 23 de enero tuvimos un plan súper diferente: fuimos a pegar los posters de tus clases de matemáticas por mi casa y después terminamos comiendo helado. Parecía una tarde tranquila, pero después de ese día las cosas se complicaron y dejamos de hablar por dos semanas. Fue un tiempo de mucha reflexión y distancia, hasta que el domingo 8 de febrero finalmente nos sentamos a conversar. Pudimos aclarar todo, arreglar las cosas y decidir que lo que tenemos vale mucho más que cualquier malentendido.`,
+    tag: "Reencuentro",
+    quote: "Reencuentro.",
+    img: "fotos/febrero.jpg"
+  },
+  {
+    date: "10 Feb 2026",
+    title: "El gran paso",
+    text: `Después de todo lo que hemos vivido, de los momentos increíbles y también de los retos que supimos superar, llegó este día que nunca voy a olvidar. Fue el momento en el que decidí dejar de lado cualquier duda y te pedí oficialmente que fueras mi enamorada. Ese "sí" significa muchísimo para mí; es el inicio de una etapa más formal y bonita, y me hace inmensamente feliz saber que ahora caminamos de la mano con la seguridad de lo que sentimos. Gracias por aceptar ser parte de mi vida de esta manera.`,
+    tag: "Oficial",
+    quote: "Ahora caminamos de la mano con la seguridad de lo que sentimos.",
+    img: "fotos/enamorados.jpg"
+  }
 ];
 
-
+/* ====== HELPERS ====== */
 const timelineEl = document.getElementById("timeline");
-
-function renderTimeline(items){
-  timelineEl.innerHTML = items.map(item => `
-    <div class="event">
-      <div>
-        <span class="date">${item.date}</span>
-        <span class="tag">${item.tag}</span>
-      </div>
-      <h3>${item.title}</h3>
-      <p>${item.text}</p>
-      ${item.quote ? `<div class="quote">“${item.quote}”</div>` : ""}
-      ${item.img ? `<div class="media"><img src="${item.img}"></div>` : ""}
-    </div>
-  `).join("");
+function esc(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
+/* ====== RENDER ====== */
+function renderTimeline(items){
+  timelineEl.innerHTML = items.map((item, idx) => `
+    <article class="event" data-idx="${idx}">
+      <div class="event-top">
+        <div class="date">${esc(item.date)}</div>
+        ${item.tag ? `<span class="tag">${esc(item.tag)}</span>` : ""}
+      </div>
+      <h3>${esc(item.title)}</h3>
+      <p>${esc(item.text)}</p>
+      ${item.quote ? `<div class="quote">“${esc(item.quote)}”</div>` : ""}
+      ${item.img ? `
+        <div class="media">
+          <img src="${esc(item.img)}" alt="${esc(item.title)}"
+               onerror="this.closest('.media').style.display='none'">
+        </div>` : ""}
+      <div class="event-actions">
+        <button class="smallbtn" data-open="${idx}">🎬 Ver momento</button>
+      </div>
+    </article>
+  `).join("");
+}
 renderTimeline(TIMELINE);
 
-/* MÚSICA */
+/* ====== ANIMACIÓN EN SCROLL ====== */
+const observer = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (e.isIntersecting) {
+      e.target.classList.add("show");
+      observer.unobserve(e.target);
+    }
+  }
+}, { threshold: 0.18 });
+
+document.querySelectorAll(".event").forEach(el => observer.observe(el));
+
+/* ====== MODAL ====== */
+const modal = document.getElementById("modal");
+const closeModal = document.getElementById("closeModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalMeta = document.getElementById("modalMeta");
+const modalImg = document.getElementById("modalImg");
+const modalText = document.getElementById("modalText");
+const modalQuote = document.getElementById("modalQuote");
+
+function openModal(idx){
+  const item = TIMELINE[idx];
+  if (!item) return;
+
+  modalTitle.textContent = item.title ?? "";
+  modalMeta.textContent = `${item.date ?? ""}${item.tag ? " · " + item.tag : ""}`;
+
+  modalText.textContent = item.text ?? "";
+
+  if (item.quote) {
+    modalQuote.style.display = "block";
+    modalQuote.textContent = `“${item.quote}”`;
+  } else {
+    modalQuote.style.display = "none";
+    modalQuote.textContent = "";
+  }
+
+  if (item.img) {
+    modalImg.src = item.img;
+    modalImg.alt = item.title ?? "";
+    modalImg.classList.add("show");
+    modalImg.onerror = () => {
+      modalImg.classList.remove("show");
+      modalImg.removeAttribute("src");
+    };
+  } else {
+    modalImg.classList.remove("show");
+    modalImg.removeAttribute("src");
+  }
+
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function hideModal(){
+  modal.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-open]");
+  if (btn) openModal(Number(btn.dataset.open));
+});
+
+closeModal.addEventListener("click", hideModal);
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) hideModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") hideModal();
+});
+
+/* ====== CONTADOR “DESDE” ====== */
+const counterEl = document.getElementById("counter");
+const START_DATE = new Date("2025-09-21T00:00:00-05:00"); // Lima
+
+function pad(n){ return String(n).padStart(2,"0"); }
+
+function updateCounter(){
+  const now = new Date();
+  const diff = now - START_DATE;
+  if (diff < 0) { counterEl.textContent = "Desde 21 Sep 2025: 0 días"; return; }
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / (3600 * 24));
+  const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+  const mins = Math.floor((totalSeconds % 3600) / 60);
+
+  counterEl.textContent = `Desde 21 Sep 2025: ${days} días · ${pad(hours)}:${pad(mins)}`;
+}
+updateCounter();
+setInterval(updateCounter, 15000);
+
+/* ====== MÚSICA ====== */
 const intro = document.getElementById("intro");
 const btnPlay = document.getElementById("btnPlay");
 const music = document.getElementById("music");
 const toggleMusic = document.getElementById("toggleMusic");
 const audioStatus = document.getElementById("audioStatus");
+const goTimeline = document.getElementById("goTimeline");
+const timelineSection = document.getElementById("timelineSection");
 
 let musicOn = false;
 
@@ -455,18 +795,28 @@ async function playMusic(){
   await music.play();
   musicOn = true;
   toggleMusic.textContent = "🎵 Música: ON";
+
   let vol = 0;
   const fade = setInterval(() => {
     vol += 0.05;
-    if(vol >= 1){ clearInterval(fade); }
+    if(vol >= 1){ clearInterval(fade); vol = 1; }
     music.volume = vol;
-  }, 150);
+  }, 140);
 }
 
 btnPlay.addEventListener("click", async ()=>{
   intro.classList.add("hide");
-  setTimeout(()=> intro.style.display="none",800);
-  try{ await playMusic(); }catch(e){}
+  setTimeout(()=> intro.style.display="none", 850);
+
+  // scroll suave a la timeline
+  setTimeout(() => {
+    timelineSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 900);
+
+  try{ await playMusic(); }catch(e){
+    // si el audio es bloqueado, igual entra al sitio sin romper
+    console.log("Audio bloqueado:", e);
+  }
 });
 
 toggleMusic.addEventListener("click", async ()=>{
@@ -479,13 +829,10 @@ toggleMusic.addEventListener("click", async ()=>{
   }
 });
 
+goTimeline.addEventListener("click", ()=>{
+  timelineSection.scrollIntoView({behavior:"smooth", block:"start"});
+});
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
